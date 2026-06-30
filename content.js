@@ -24,7 +24,8 @@ const LANG_LABEL = {
 const MATH_RE = /\$\$\$([\s\S]+?)\$\$\$|\$\$([\s\S]+?)\$\$|\$([\s\S]+?)\$|\\\(([\s\S]+?)\\\)/g;
 const ORDINAL_RE = /\b([a-z])-(?:th|st|nd|rd)\b/g;
 const SUBSCRIPT_RE = /\b[a-zA-Z]+_(?:[a-zA-Z0-9]|\{[^}]*\})/g;
-const CP_VAR_RE = /\b([a-z])\b/g;
+const CP_VAR_RE = /\b([b-z])\b/g;
+const A_VAR_RE = /\b(a)\b(?=[.,;:)\]}=!?]|\s+[+\-*/%^=<>!]|$)/g;
 const MATH_MARK = /<<<M(\d+)>>>/g;
 
 function preserveMath(text) {
@@ -40,6 +41,10 @@ function preserveMath(text) {
       return '<<<M' + (blocks.length - 1) + '>>>';
     })
     .replace(SUBSCRIPT_RE, (m) => {
+      blocks.push(m);
+      return '<<<M' + (blocks.length - 1) + '>>>';
+    })
+    .replace(A_VAR_RE, (m) => {
       blocks.push(m);
       return '<<<M' + (blocks.length - 1) + '>>>';
     })
